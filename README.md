@@ -6,7 +6,8 @@ Streamer Timer is a simple tool designed to help streamers track the total durat
 
 - Easy-to-use stopwatch for live streams.
 - Tracks the total duration of the stream.
-- Customize your wallpaper and colors
+- Customize your wallpaper and colors.
+- Persist time even if you close the page.
 
 ## Installation
 
@@ -20,6 +21,12 @@ Streamer Timer is a simple tool designed to help streamers track the total durat
 
 1. Start the application using `index.html` or a `Live server (extension for VSCode)`
 2. Follow the on-screen instructions to start the stopwatch and track your live stream duration.
+3. The right top corner has a hover button to access the configuration modal.
+
+### Images
+
+[hover_corner](https://raw.githubusercontent.com/felipeolliveira/generic_stream_timer/main/docs/hover-corner.png)
+[example](https://raw.githubusercontent.com/felipeolliveira/generic_stream_timer/main/docs/example.png)
 
 ## Contributing
 
