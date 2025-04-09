@@ -12,7 +12,7 @@ Streamer Timer is a simple tool designed to help streamers track the total durat
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/streamer_timer.git
+   git clone https://github.com/felipeolliveira/generic_stream_timer
    ```
 2. And... Ready! Is the simple project
 
