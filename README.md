@@ -25,8 +25,8 @@ Streamer Timer is a simple tool designed to help streamers track the total durat
 
 ### Images
 
-[hover_corner](https://raw.githubusercontent.com/felipeolliveira/generic_stream_timer/main/docs/hover-corner.png)
-[example](https://raw.githubusercontent.com/felipeolliveira/generic_stream_timer/main/docs/example.png)
+![hover_corner](https://raw.githubusercontent.com/felipeolliveira/generic_stream_timer/main/docs/hover-corner.png)
+![example](https://raw.githubusercontent.com/felipeolliveira/generic_stream_timer/main/docs/example.png)
 
 ## Contributing
 
