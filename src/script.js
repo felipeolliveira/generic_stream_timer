@@ -6,13 +6,26 @@ const timerElement = document.getElementById('timer');
 const startBtn = document.getElementById('startBtn');
 const resetBtn = document.getElementById('resetBtn');
 const bgColorInput = document.getElementById('bgColorInput');
+const bgColorTextInput = document.getElementById('bgColorTextInput');
 const bgImageInput = document.getElementById('bgImageInput');
 const opacitySlider = document.getElementById('opacitySlider');
-const settingsBtn = document.getElementById('settingsBtn');
-const settingsModal = document.getElementById('settingsModal');
-const closeModal = document.getElementById('closeModal');
 const removeBgImage = document.getElementById('removeBgImageBtn');
 const timerColorInput = document.getElementById('timerColorInput');
+const timerColorTextInput = document.getElementById('timerColorTextInput');
+const settingAgent = document.getElementById('settingsAgent');
+
+const isObsBrowser = navigator.userAgent.toLowerCase().toLowerCase().includes('obs');
+
+function loadBrowserInfo() {
+  settingAgent.innerText = isObsBrowser ? '(OBS Studio)' : '(Navegador Padrão)';
+
+  // Adiciona classe ao body baseado no tipo de navegador
+  if (isObsBrowser) {
+    document.body.classList.add('is-obs');
+  } else {
+    document.body.classList.remove('is-obs');
+  }
+}
 
 function updateTimerDisplay() {
   if (!startTime) return;
@@ -37,7 +50,8 @@ function startTimer() {
 }
 
 function resetTimer() {
-  if (window.confirm('Quer realmente reiniciar o cronômetro?')) {
+  // Comportamento diferente baseado no tipo de navegador
+  if (isObsBrowser || window.confirm('Quer realmente reiniciar o cronômetro?')) {
     clearInterval(timerInterval);
     timerInterval = null;
     startTime = null;
@@ -47,14 +61,21 @@ function resetTimer() {
     startBtn.style.display = 'inline';
     resetBtn.style.display = 'none';
 
-    settingsModal.classList.remove('flex');
-
     saveSettings();
   }
 }
 
 function setBackgroundColor(color) {
   document.body.style.backgroundColor = color;
+
+  // Sincroniza os valores entre os diferentes inputs
+  if (bgColorInput.value !== color) {
+    bgColorInput.value = color;
+  }
+  if (bgColorTextInput.value !== color) {
+    bgColorTextInput.value = color;
+  }
+
   saveSettings();
 }
 
@@ -97,8 +118,15 @@ function setOpacity(opacity) {
 
 function setTimerColor(color) {
   timerElement.style.color = color;
-  settingsBtn.style.fill = color;
-  settingsBtn.style.borderColor = color;
+
+  // Sincroniza os valores entre os diferentes inputs
+  if (timerColorInput.value !== color) {
+    timerColorInput.value = color;
+  }
+  if (timerColorTextInput.value !== color) {
+    timerColorTextInput.value = color;
+  }
+
   saveSettings();
 }
 
@@ -127,13 +155,17 @@ function loadSettings() {
   const settings = JSON.parse(localStorage.getItem('timerSettings'));
   if (settings) {
     startTime = settings.startTime ? new Date(settings.startTime).getTime() : null;
+
+    // Configura cores
     bgColorInput.value = settings.bgColor;
+    bgColorTextInput.value = settings.bgColor;
     document.body.style.backgroundColor = settings.bgColor;
+
     opacitySlider.value = settings.opacity || '0';
+
     timerColorInput.value = settings.timerColor || '#ffffff';
+    timerColorTextInput.value = settings.timerColor || '#ffffff';
     timerElement.style.color = settings.timerColor || '#ffffff';
-    settingsBtn.style.fill = settings.timerColor || '#ffffff';
-    settingsBtn.style.borderColor = settings.timerColor || '#ffffff';
 
     if (settings.bgImageSrc) {
       bgImage.src = settings.bgImageSrc;
@@ -159,16 +191,18 @@ function loadSettings() {
       resetBtn.style.display = 'none';
     };
 
+    loadBrowserInfo();
+
     return;
   }
 
   document.body.style.backgroundColor = '#000000';
   bgColorInput.value = '#000000';
+  bgColorTextInput.value = '#000000';
 
   timerElement.style.color = '#ffffff';
   timerColorInput.value = '#ffffff';
-  settingsBtn.style.fill = '#ffffff';
-  settingsBtn.style.borderColor = '#ffffff';
+  timerColorTextInput.value = '#ffffff';
 
   bgImage.style.display = 'none';
   bgImage.src = '';
@@ -178,28 +212,25 @@ function loadSettings() {
 
   startBtn.style.display = 'inline';
   resetBtn.style.display = 'none';
+
+  loadBrowserInfo();
 }
-
-// Modal Handlers
-settingsBtn.addEventListener('click', () => settingsModal.classList.add('flex'));
-closeModal.addEventListener('click', () => settingsModal.classList.remove('flex'));
-document.addEventListener('click', (e) => {
-  if (!settingsModal.contains(e.target) && e.target !== settingsBtn) {
-    settingsModal.classList.remove('flex');
-  }
-});
-
-// Ensure modal starts closed
-settingsModal.classList.remove('flex');
 
 // Event Listeners
 startBtn.addEventListener('click', startTimer);
 resetBtn.addEventListener('click', resetTimer);
+
+// Event listeners para os inputs de cor originais
 bgColorInput.addEventListener('input', (e) => setBackgroundColor(e.target.value));
+timerColorInput.addEventListener('input', (e) => setTimerColor(e.target.value));
+
+// Event listeners para os inputs de texto (somente OBS)
+bgColorTextInput.addEventListener('change', (e) => setBackgroundColor(e.target.value));
+timerColorTextInput.addEventListener('change', (e) => setTimerColor(e.target.value));
+
 bgImageInput.addEventListener('change', (e) => setBackgroundImage(e.target.files[ 0 ]));
 removeBgImage.addEventListener('click', removeBackgroundImage);
 opacitySlider.addEventListener('input', (e) => setOpacity(e.target.value));
-timerColorInput.addEventListener('input', (e) => setTimerColor(e.target.value));
 
 // Initialize
 loadSettings();

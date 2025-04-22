@@ -66,3 +66,20 @@ input[type="range"]::-webkit-slider-thumb {
 #settingsModal.flex {
   display: block;
 }
+
+/* Classes para controlar visibilidade baseada no navegador */
+.obs-only {
+  display: none;
+}
+
+.browser-only {
+  display: block;
+}
+
+body.is-obs .obs-only {
+  display: block;
+}
+
+body.is-obs .browser-only {
+  display: none;
+}
